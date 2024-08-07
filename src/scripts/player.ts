@@ -4,12 +4,14 @@ import p5 from "p5";
 const playerWidth = 50;
 const playerHeight = 100;
 const speed = 20;
-const damage = 25;
+//const damage = 25;
 
+/*
 let maxHealth = 50;
 let currentHealth = 50;
 let armor = 0;
 let lives = 3;
+*/
 
 let playerCoordinates = {
   x: 275,
@@ -19,12 +21,14 @@ let playerCoordinates = {
 // Player Bonuses
 
 let speedBonus = 1;
+/*
 let damageBonus = 1;
 
 let hasShield = false;
 let hasChainAttack = false;
 
 let granadeNumber = 0;
+*/
 
 // Bullet Stuff
 let playerBullets: any = [];
