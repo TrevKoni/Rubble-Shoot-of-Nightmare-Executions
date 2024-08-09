@@ -1,17 +1,14 @@
 import p5 from "p5";
 
+// TODO: Add Colliders, Add healthbar, Add lives, Add damage, Add Basic Enemy
+
 // Player Stuff
 const playerWidth = 50;
 const playerHeight = 100;
 const speed = 20;
-//const damage = 25;
 
-/*
 let maxHealth = 50;
 let currentHealth = 50;
-let armor = 0;
-let lives = 3;
-*/
 
 let playerCoordinates = {
   x: 275,
@@ -21,14 +18,6 @@ let playerCoordinates = {
 // Player Bonuses
 
 let speedBonus = 1;
-/*
-let damageBonus = 1;
-
-let hasShield = false;
-let hasChainAttack = false;
-
-let granadeNumber = 0;
-*/
 
 // Bullet Stuff
 let playerBullets: any = [];
@@ -39,9 +28,9 @@ const bulletHeight = 10;
 
 const player = (p: p5, screenWidth: number, screenHeight: number) => {
   playerBody(p);
+  healthbar(p);
   playerMovement(p, screenWidth, screenHeight);
   shoot(p);
-  //granadeThrown();
 };
 
 // Player Function Components
@@ -91,7 +80,6 @@ const shoot = (p: p5) => {
     playerBullet.y -= speed * speedBonus + 5;
     if (playerBullet.y < -10) {
       playerBullets.splice(playerBullets.indexOf(playerBullet), 1);
-      console.log(playerBullets.length);
     }
   }
 };
@@ -103,14 +91,18 @@ const bulletBody = (p: p5, bulletX: number, bulletY: number) => {
   p.rect(bulletX, bulletY, bulletWidth, bulletHeight);
 };
 
-/*
-const granadeThrown = () => {
-  document.addEventListener("keyup", (event: KeyboardEvent) => {
-    if (event.key === "f" || event.key === "F") {
-      console.log("F has been released!")
-    }
-  });
+const healthbar = (p: p5) => {
+  // Max Health Block
+  let white = p.color("#FFFFFF");
+  p.fill(white);
+  p.noStroke();
+  p.rect(25, 850, maxHealth, 25);
+
+  // Current Health Block
+  let red = p.color("#FF0000");
+  p.fill(red);
+  p.noStroke();
+  p.rect(25, 850, currentHealth, 25);
 };
-*/
 
 export default player;
