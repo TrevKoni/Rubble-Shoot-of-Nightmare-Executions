@@ -4,9 +4,8 @@ let enemies: { x: number; y: number }[] = [];
 const enemyWidth = 30;
 const enemyHeight = 50;
 const enemySpeed = 5;
-const maxEnemies = 5;
 
-const setupEnemies = (p: p5, screenWidth: number) => {
+const setupEnemies = (p: p5, screenWidth: number, maxEnemies: number) => {
   for (let i = 0; i < maxEnemies; i++) {
     let enemy = {
       x: p.random(50, screenWidth - 50),
@@ -16,7 +15,12 @@ const setupEnemies = (p: p5, screenWidth: number) => {
   }
 };
 
-const updateEnemies = (p: p5, screenWidth: number, screenHeight: number) => {
+const updateEnemies = (
+  p: p5,
+  screenWidth: number,
+  screenHeight: number,
+  maxEnemies: number,
+) => {
   for (let i = enemies.length - 1; i >= 0; i--) {
     let enemy = enemies[i];
     enemy.y += enemySpeed;
@@ -45,11 +49,16 @@ const enemyBody = (p: p5, enemyX: number, enemyY: number) => {
   p.rect(enemyX, enemyY, enemyWidth, enemyHeight);
 };
 
-const enemy = (p: p5, screenWidth: number, screenHeight: number) => {
+const enemy = (
+  p: p5,
+  screenWidth: number,
+  screenHeight: number,
+  maxEnemies: number,
+) => {
   if (enemies.length === 0) {
-    setupEnemies(p, screenWidth);
+    setupEnemies(p, screenWidth, maxEnemies);
   }
-  updateEnemies(p, screenWidth, screenHeight);
+  updateEnemies(p, screenWidth, screenHeight, maxEnemies);
 };
 
 export default enemy;

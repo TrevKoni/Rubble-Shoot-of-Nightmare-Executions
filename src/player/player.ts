@@ -1,7 +1,5 @@
 import p5 from "p5";
 
-// TODO: Add Colliders, Add healthbar, Add lives, Add damage, Add Basic Enemy
-
 // Player Stuff
 const playerWidth = 50;
 const playerHeight = 100;
