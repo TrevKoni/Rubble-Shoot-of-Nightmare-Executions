@@ -1,11 +1,10 @@
 import p5 from "p5";
 
 let enemies: { x: number; y: number }[] = [];
-const enemyWidth = 30;
-const enemyHeight = 50;
 const enemySpeed = 5;
+const maxEnemies = 15;
 
-const setupEnemies = (p: p5, screenWidth: number, maxEnemies: number) => {
+const setupEnemies = (p: p5, screenWidth: number) => {
   for (let i = 0; i < maxEnemies; i++) {
     let enemy = {
       x: p.random(50, screenWidth - 50),
@@ -15,12 +14,7 @@ const setupEnemies = (p: p5, screenWidth: number, maxEnemies: number) => {
   }
 };
 
-const updateEnemies = (
-  p: p5,
-  screenWidth: number,
-  screenHeight: number,
-  maxEnemies: number,
-) => {
+const updateEnemies = (p: p5, screenWidth: number, screenHeight: number) => {
   for (let i = enemies.length - 1; i >= 0; i--) {
     let enemy = enemies[i];
     enemy.y += enemySpeed;
@@ -43,22 +37,20 @@ const updateEnemies = (
 };
 
 const enemyBody = (p: p5, enemyX: number, enemyY: number) => {
-  let black = p.color("#000000");
-  p.fill(black);
+  let color = p.color("#000000");
+  p.fill(color);
   p.noStroke();
-  p.rect(enemyX, enemyY, enemyWidth, enemyHeight);
+  p.rect(enemyX, enemyY, 30, 50);
 };
 
-const enemy = (
-  p: p5,
-  screenWidth: number,
-  screenHeight: number,
-  maxEnemies: number,
-) => {
+const enemy = (p: p5, screenWidth: number, screenHeight: number) => {
   if (enemies.length === 0) {
-    setupEnemies(p, screenWidth, maxEnemies);
+    setupEnemies(p, screenWidth);
   }
-  updateEnemies(p, screenWidth, screenHeight, maxEnemies);
+  updateEnemies(p, screenWidth, screenHeight);
+
+  // Return the list of enemies for collision detection
+  return enemies;
 };
 
 export default enemy;
