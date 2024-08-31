@@ -9,6 +9,8 @@ sessionStorage.setItem("GameState", "MainMenu");
 const sketch = (p: p5) => {
   p.setup = () => {
     p.createCanvas(screenWidth, screenHeight);
+
+    p.frameRate(120);
   };
 
   p.draw = () => {
@@ -19,3 +21,5 @@ const sketch = (p: p5) => {
 };
 
 new p5(sketch);
+
+export { screenWidth, screenHeight };

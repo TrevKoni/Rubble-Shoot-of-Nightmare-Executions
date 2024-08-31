@@ -2,7 +2,7 @@ import p5 from "p5";
 
 let enemies: { x: number; y: number }[] = [];
 const enemySpeed = 5;
-const maxEnemies = 15;
+const maxEnemies = 10;
 
 const setupEnemies = (p: p5, screenWidth: number) => {
   for (let i = 0; i < maxEnemies; i++) {

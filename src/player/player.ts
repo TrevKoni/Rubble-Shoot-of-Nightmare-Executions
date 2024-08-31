@@ -1,4 +1,5 @@
 import p5 from "p5";
+import drop from "../drops/drops";
 
 // Player Stuff
 const playerWidth = 50;
@@ -43,6 +44,8 @@ const player = (
   if (currentHealth <= 0) {
     sessionStorage.setItem("GameState", "Dead");
   }
+
+  drop(p, playerCoordinates.x, playerCoordinates.y);
 
   scorePlace(p);
 };
@@ -163,4 +166,4 @@ const scorePlace = (p: p5) => {
   p.text("SCORE: " + score, 400, 875);
 };
 
-export default player;
+export { player, score };
