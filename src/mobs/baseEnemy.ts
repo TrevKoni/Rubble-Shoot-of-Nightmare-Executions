@@ -37,7 +37,7 @@ const updateEnemies = (p: p5, screenWidth: number, screenHeight: number) => {
   }
 
   if (enemySpeed < enemyMaxSpeed) {
-    enemySpeed += 0.0001 * p.deltaTime;
+    enemySpeed += 0.00005 * p.deltaTime;
   }
 };
 

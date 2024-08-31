@@ -16,7 +16,7 @@ let dropSpawn = {
   y: 50,
 };
 
-const dropSpeed = 0.05;
+const dropSpeed = 0.25;
 
 let dropType = "";
 

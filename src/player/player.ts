@@ -37,7 +37,7 @@ let currentDrop: {
   dropX: number;
   dropY: number;
 } | null = null;
-let dropScores: number[] = [100, 200, 400, 800, 1200, 1600, 2000, 2500];
+let dropScores: number[] = [100, 200, 300];
 
 // Player Function
 const player = (
@@ -66,6 +66,15 @@ const player = (
   dealWithDrops(p, screenHeight);
 
   scorePlace(p);
+
+  clearAndUpdateDropScoresArray();
+};
+
+const clearAndUpdateDropScoresArray = () => {
+  if (score > dropScores[0]) {
+    dropScores.push(dropScores[0] + dropScores[dropScores.length - 1]);
+    dropScores.shift();
+  }
 };
 
 // Player Function Components
@@ -200,7 +209,6 @@ const dealWithDrops = (p: p5, screenHeight: number) => {
   if (dropCurrently && currentDrop) {
     // Draw the drop
     currentDrop = drop(p); // Update the drop's position and properties
-    console.log(currentDrop.dropType);
 
     if (currentDrop.dropY > screenHeight) {
       dropCurrently = false; // Deactivate the drop
