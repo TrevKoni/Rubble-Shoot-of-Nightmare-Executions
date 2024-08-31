@@ -1,7 +1,8 @@
 import p5 from "p5";
 
 let enemies: { x: number; y: number }[] = [];
-const enemySpeed = 5;
+let enemySpeed = 5;
+const enemyMaxSpeed = 15;
 const maxEnemies = 10;
 
 const setupEnemies = (p: p5, screenWidth: number) => {
@@ -33,6 +34,10 @@ const updateEnemies = (p: p5, screenWidth: number, screenHeight: number) => {
       y: p.random(-100, -50),
     };
     enemies.push(newEnemy);
+  }
+
+  if (enemySpeed < enemyMaxSpeed) {
+    enemySpeed += 0.0001 * p.deltaTime;
   }
 };
 
