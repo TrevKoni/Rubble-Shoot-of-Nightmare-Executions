@@ -30,9 +30,9 @@ let selectedBoss = bosses.bosses[bossKey]; // Access the boss object
 // Now you can safely access the properties
 let bossVelocity = selectedBoss.speed;
 let bossHealth = selectedBoss.health;
-let blastNumber = selectedBoss.blasts;
-let blastSpeed = selectedBoss.blastSpeed;
-let blastDamage = selectedBoss.damage;
+//let blastNumber = selectedBoss.blasts;
+//let blastSpeed = selectedBoss.blastSpeed;
+//let blastDamage = selectedBoss.damage;
 
 let bossCoordinates = {
   x: 20,
@@ -100,9 +100,9 @@ const bossDied = () => {
   // Update boss stats to match the new boss
   bossVelocity = selectedBoss.speed;
   bossHealth = selectedBoss.health;
-  blastNumber = selectedBoss.blasts;
-  blastSpeed = selectedBoss.blastSpeed;
-  blastDamage = selectedBoss.damage;
+  // blastNumber = selectedBoss.blasts;
+  //blastSpeed = selectedBoss.blastSpeed;
+  //blastDamage = selectedBoss.damage;
 };
 
 export { boss, damageBoss, bossDied };
