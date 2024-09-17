@@ -1,5 +1,6 @@
 import p5 from "p5";
 import { drop, resetDrop } from "../drops/drops";
+import { boss, bossDied, damageBoss } from "../mobs/baseBoss";
 
 // Player Stuff
 const playerWidth = 50;
@@ -29,7 +30,7 @@ let playerBullets: any = [];
 const bulletWidth = 6;
 const bulletHeight = 10;
 
-// Current Drops
+// Drops Stuff
 let dropCurrently = false; // Track if a drop is currently active
 let currentDrop: {
   dropType: string;
@@ -38,6 +39,17 @@ let currentDrop: {
   dropY: number;
 } | null = null;
 let dropScores: number[] = [100, 200, 300];
+
+// Boss Stuff
+let bossCurrently = false;
+let currentBoss: {
+  bossX: number;
+  bossY: number;
+  bossHealth: number;
+  bossWidth: number;
+  bossHeight: number;
+} | null = null;
+let bossDropScores: number[] = [500, 1000, 1500];
 
 // Player Function
 const player = (
@@ -63,17 +75,29 @@ const player = (
     sessionStorage.setItem("GameState", "GameWon");
   }
 
+  // Drop dealing zone
   dealWithDrops(p, screenHeight);
-
   scorePlace(p);
-
   clearAndUpdateDropScoresArray();
+
+  // Boss dealing zone
+  dealWithBosses(p);
+  clearAndUpdateBossDropScoresArray();
 };
 
 const clearAndUpdateDropScoresArray = () => {
   if (score > dropScores[0]) {
     dropScores.push(dropScores[0] + dropScores[dropScores.length - 1]);
     dropScores.shift();
+  }
+};
+
+const clearAndUpdateBossDropScoresArray = () => {
+  if (score > bossDropScores[0]) {
+    bossDropScores.push(
+      bossDropScores[0] + bossDropScores[dropScores.length - 1],
+    );
+    bossDropScores.shift();
   }
 };
 
@@ -163,6 +187,21 @@ const shoot = (p: p5, enemies: any[]) => {
         break; // Exit loop since this bullet is now removed
       }
     }
+
+    // Check for collision with boss
+    if (currentBoss) {
+      if (
+        playerBullet.x < currentBoss.bossX + currentBoss.bossWidth &&
+        playerBullet.x + bulletWidth > currentBoss.bossX &&
+        playerBullet.y < currentBoss.bossY + currentBoss.bossHeight &&
+        playerBullet.y + bulletHeight > currentBoss.bossY
+      ) {
+        // Collision detected, remove the bullet 
+        playerBullets.splice(i, 1); // Remove bullet
+        damageBoss(damage);
+        break; // Exit loop since this bullet is now removed
+      }
+    }
   }
 };
 
@@ -245,6 +284,31 @@ const dealWithDrops = (p: p5, screenHeight: number) => {
       currentDrop = null; // Clear the current drop
       resetDrop(); // Reset the drop
     }
+  }
+};
+
+const dealWithBosses = (p: p5) => {
+  // Function to trigger a boss
+  const addBoss = () => {
+    bossCurrently = true;
+    currentBoss = boss(p); // Initialize the current boss
+  };
+
+  // Check if score reaches specific milestones and trigger a boss
+  if (bossDropScores.includes(score) && !bossCurrently) {
+    addBoss();
+  }
+
+  // Handle the boss if one is active
+  if (bossCurrently && currentBoss) {
+    // Draw the boss
+    currentBoss = boss(p); // Update the boss's position and properties
+  }
+
+  if (currentBoss && currentBoss.bossHealth <= 0) {
+    bossCurrently = false; // Deactivate the boss
+    currentBoss = null; // Clear the current boss
+    bossDied();
   }
 };
 
