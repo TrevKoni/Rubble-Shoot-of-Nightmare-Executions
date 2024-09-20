@@ -22,6 +22,10 @@ interface Bosses {
 // Cast the imported JSON to the correct type
 const bosses = bossesData as { bosses: Bosses }; // Correctly access bosses
 
+const screenWidth = 600;
+const screenHeight = 900;
+const totalBossArea = screenWidth - 50;
+
 // Access the specific boss using the correct key
 let bossId = 0;
 let bossKey = Object.keys(bosses.bosses)[bossId]; // Get the boss key by index
@@ -29,10 +33,11 @@ let selectedBoss = bosses.bosses[bossKey]; // Access the boss object
 
 // Now you can safely access the properties
 let bossVelocity = selectedBoss.speed;
+let maxBossHealth = selectedBoss.health;
 let bossHealth = selectedBoss.health;
-//let blastNumber = selectedBoss.blasts;
-//let blastSpeed = selectedBoss.blastSpeed;
-//let blastDamage = selectedBoss.damage;
+let blastNumber = selectedBoss.blasts;
+let blastSpeed = selectedBoss.blastSpeed;
+let blastDamage = selectedBoss.damage;
 
 let bossCoordinates = {
   x: 20,
@@ -44,6 +49,10 @@ const bossSize = {
   height: 200,
 };
 
+let blasts: { x: number; y: number }[] = [];
+let blastXes: number[] = [];
+const blastY = bossCoordinates.y + bossSize.height;
+
 const boss = (
   p: p5,
 ): {
@@ -52,18 +61,46 @@ const boss = (
   bossHealth: number;
   bossWidth: number;
   bossHeight: number;
+  blastDamage: number;
+  blasts: { x: number; y: number }[];
 } => {
   bossBody(p, bossCoordinates.x, bossCoordinates.y);
 
   bossMovement();
 
+  bossHealthbar(p);
+
+  if (blastXes.length < blastNumber - 1) {
+    calculateBlastDropSpots();
+  }
+
+  let currentBlastX = bossCoordinates.x + bossSize.width / 2;
+
+  if (blastXes.includes(currentBlastX)) {
+    blasts.push({ x: currentBlastX, y: blastY });
+    console.log("Real");
+  }
+
+  bossShoot(p);
+
   return {
     bossX: bossCoordinates.x,
     bossY: bossCoordinates.y,
-    bossHealth: bossHealth,
+    bossHealth,
     bossWidth: bossSize.width,
     bossHeight: bossSize.height,
+    blastDamage,
+    blasts,
   };
+};
+
+const bossHealthbar = (p: p5) => {
+  const barWidth = totalBossArea * (bossHealth / maxBossHealth);
+
+  let red = p.color("#FF0000");
+  p.fill(red);
+  p.noStroke();
+  p.rect(25, 25, barWidth, 20);
 };
 
 const bossMovement = () => {
@@ -85,6 +122,35 @@ const damageBoss = (damage: number) => {
   bossHealth -= damage;
 };
 
+const blastBody = (p: p5, blastX: number, blastY: number) => {
+  let red = p.color("#FF00FF");
+  p.fill(red);
+  p.noStroke();
+  p.ellipse(blastX, blastY, 20, 20);
+};
+
+const bossShoot = (p: p5) => {
+  blasts.forEach((blast) => {
+    let blastX = blast.x;
+    let blastY = blast.y;
+    blastBody(p, blastX, blastY);
+    blast.y += blastSpeed;
+    console.log("pew");
+
+    if (blast.y > screenHeight) {
+      blasts.splice(blasts.indexOf(blast), 1);
+    }
+  });
+};
+
+// Calculate the positions of the blasts
+const calculateBlastDropSpots = () => {
+  for (let i = 1; i <= blastNumber; i++) {
+    let blastX = i * (totalBossArea / (blastNumber + 1));
+    blastXes.push(blastX);
+  }
+};
+
 const bossDied = () => {
   bossId += 1;
   bossCoordinates.x = 20;
@@ -99,10 +165,12 @@ const bossDied = () => {
 
   // Update boss stats to match the new boss
   bossVelocity = selectedBoss.speed;
+  maxBossHealth = selectedBoss.health;
   bossHealth = selectedBoss.health;
-  // blastNumber = selectedBoss.blasts;
-  //blastSpeed = selectedBoss.blastSpeed;
-  //blastDamage = selectedBoss.damage;
+  blastNumber = selectedBoss.blasts;
+  blastSpeed = selectedBoss.blastSpeed;
+  blastDamage = selectedBoss.damage;
+  blastXes = [];
 };
 
 export { boss, damageBoss, bossDied };

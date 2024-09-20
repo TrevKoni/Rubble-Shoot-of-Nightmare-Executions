@@ -6,7 +6,7 @@
       "image": "threevpng",
       "blastImage": "threevblastpng",
       "bossMusic": "threev",
-      "health": 100,
+      "health": 1000,
       "damage": 10,
       "speed": 20,
       "blasts": 3,
@@ -18,35 +18,23 @@
       "image": "fuzzypng",
       "blastImage": "threevblastpng",
       "bossMusic": "fuzzy",
-      "health": 200,
+      "health": 2000,
       "damage": 10,
       "speed": 20,
       "blasts": 4,
       "blastSpeed": 15
     },
-    "threev": {
-      "name": "Threev",
-      "streamUrl": "https://www.twitch.tv/threevprime",
-      "image": "threevpng",
-      "blastImage": "threevblastpng",
-      "bossMusic": "threev",
-      "health": 300,
+    "starlightsyd": {
+      "name": "StarlightSyd",
+      "streamUrl": "https://www.twitch.tv/starlightsyd",
+      "image": "starlightsydpng",
+      "blastImage": "starlightsydblastpng",
+      "bossMusic": "starlightsyd",
+      "health": 3000,
       "damage": 20,
       "speed": 20,
-      "blasts": 3,
+      "blasts": 2,
       "blastSpeed": 20
-    },
-    "fuzzyfang": {
-      "name": "Fuzzy_Fang",
-      "streamUrl": "https://www.twitch.tv/fuzzy_fang",
-      "image": "fuzzypng",
-      "blastImage": "threevblastpng",
-      "bossMusic": "fuzzy",
-      "health": 400,
-      "damage": 30,
-      "speed": 20,
-      "blasts": 4,
-      "blastSpeed": 15
     }
   }
 }

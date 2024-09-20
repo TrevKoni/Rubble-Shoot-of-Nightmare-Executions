@@ -48,6 +48,8 @@ let currentBoss: {
   bossHealth: number;
   bossWidth: number;
   bossHeight: number;
+  blastDamage: number;
+  blasts: { x: number; y: number }[];
 } | null = null;
 let bossDropScores: number[] = [500, 1000, 1500];
 
@@ -83,6 +85,7 @@ const player = (
   // Boss dealing zone
   dealWithBosses(p);
   clearAndUpdateBossDropScoresArray();
+  blastCollision();
 };
 
 const clearAndUpdateDropScoresArray = () => {
@@ -150,6 +153,19 @@ const playerCollision = (enemies: any[]): boolean => {
   return false; // No collision
 };
 
+const blastCollision = () => {
+  currentBoss?.blasts.forEach((blast: any) => {
+    if (
+      playerCoordinates.x < blast.x + 30 && // Assuming 30 is the enemy width
+      playerCoordinates.x + playerWidth > blast.x &&
+      playerCoordinates.y < blast.y + 50 && // Assuming 50 is the enemy height
+      playerCoordinates.y + playerHeight > blast.y
+    ) {
+      currentHealth -= currentBoss?.blastDamage || 0;
+    }
+  });
+};
+
 const shoot = (p: p5, enemies: any[]) => {
   if (p.keyIsDown(32)) {
     let playerBullet = {
@@ -196,7 +212,7 @@ const shoot = (p: p5, enemies: any[]) => {
         playerBullet.y < currentBoss.bossY + currentBoss.bossHeight &&
         playerBullet.y + bulletHeight > currentBoss.bossY
       ) {
-        // Collision detected, remove the bullet 
+        // Collision detected, remove the bullet
         playerBullets.splice(i, 1); // Remove bullet
         damageBoss(damage);
         break; // Exit loop since this bullet is now removed
