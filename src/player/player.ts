@@ -1,6 +1,6 @@
 import p5 from "p5";
 import { drop, resetDrop } from "../drops/drops";
-import { boss, bossDied, damageBoss } from "../mobs/baseBoss";
+import { boss, bossDied, damageBoss, removeBlast } from "../mobs/baseBoss";
 
 // Player Stuff
 const playerWidth = 50;
@@ -9,8 +9,8 @@ const speed = 20;
 
 let damage = 1;
 
-let maxHealth = 50;
-let currentHealth = 50;
+let maxHealth = 100;
+let currentHealth = 100;
 
 let score = 0;
 
@@ -154,7 +154,7 @@ const playerCollision = (enemies: any[]): boolean => {
 };
 
 const blastCollision = () => {
-  currentBoss?.blasts.forEach((blast: any) => {
+  currentBoss?.blasts.forEach((blast: any, index) => {
     if (
       playerCoordinates.x < blast.x + 30 && // Assuming 30 is the enemy width
       playerCoordinates.x + playerWidth > blast.x &&
@@ -162,6 +162,8 @@ const blastCollision = () => {
       playerCoordinates.y + playerHeight > blast.y
     ) {
       currentHealth -= currentBoss?.blastDamage || 0;
+
+      removeBlast(index);
     }
   });
 };
@@ -325,6 +327,11 @@ const dealWithBosses = (p: p5) => {
     bossCurrently = false; // Deactivate the boss
     currentBoss = null; // Clear the current boss
     bossDied();
+
+    currentHealth += 500;
+    if (currentHealth > maxHealth) {
+      currentHealth = maxHealth;
+    }
   }
 };
 

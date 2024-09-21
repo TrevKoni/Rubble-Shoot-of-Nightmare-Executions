@@ -77,8 +77,7 @@ const boss = (
   let currentBlastX = bossCoordinates.x + bossSize.width / 2;
 
   if (blastXes.includes(currentBlastX)) {
-    blasts.push({ x: currentBlastX, y: blastY });
-    console.log("Real");
+    blasts.push({ x: Math.floor(currentBlastX), y: blastY });
   }
 
   bossShoot(p);
@@ -135,7 +134,6 @@ const bossShoot = (p: p5) => {
     let blastY = blast.y;
     blastBody(p, blastX, blastY);
     blast.y += blastSpeed;
-    console.log("pew");
 
     if (blast.y > screenHeight) {
       blasts.splice(blasts.indexOf(blast), 1);
@@ -147,8 +145,12 @@ const bossShoot = (p: p5) => {
 const calculateBlastDropSpots = () => {
   for (let i = 1; i <= blastNumber; i++) {
     let blastX = i * (totalBossArea / (blastNumber + 1));
-    blastXes.push(blastX);
+    blastXes.push(Math.floor(blastX + 25));
   }
+};
+
+const removeBlast = (i: number) => {
+  blasts.splice(i, 1);
 };
 
 const bossDied = () => {
@@ -171,6 +173,7 @@ const bossDied = () => {
   blastSpeed = selectedBoss.blastSpeed;
   blastDamage = selectedBoss.damage;
   blastXes = [];
+  blasts = [];
 };
 
-export { boss, damageBoss, bossDied };
+export { boss, damageBoss, bossDied, removeBlast };
