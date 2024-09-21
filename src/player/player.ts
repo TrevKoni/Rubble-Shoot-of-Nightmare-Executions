@@ -7,7 +7,7 @@ const playerWidth = 50;
 const playerHeight = 100;
 const speed = 20;
 
-let damage = 1;
+let damage = 10;
 
 let maxHealth = 100;
 let currentHealth = 100;

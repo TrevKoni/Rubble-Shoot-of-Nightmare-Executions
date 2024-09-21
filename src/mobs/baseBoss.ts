@@ -52,6 +52,8 @@ const bossSize = {
 let blasts: { x: number; y: number }[] = [];
 let blastXes: number[] = [];
 const blastY = bossCoordinates.y + bossSize.height;
+let shoots = 0;
+let goingRight = true;
 
 const boss = (
   p: p5,
@@ -74,13 +76,9 @@ const boss = (
     calculateBlastDropSpots();
   }
 
-  let currentBlastX = bossCoordinates.x + bossSize.width / 2;
-
-  if (blastXes.includes(currentBlastX)) {
-    blasts.push({ x: Math.floor(currentBlastX), y: blastY });
-  }
-
+  handleBlasts();
   bossShoot(p);
+  handleShoots();
 
   return {
     bossX: bossCoordinates.x,
@@ -128,6 +126,19 @@ const blastBody = (p: p5, blastX: number, blastY: number) => {
   p.ellipse(blastX, blastY, 20, 20);
 };
 
+const handleBlasts = () => {
+  let currentBlastX = bossCoordinates.x + bossSize.width / 2;
+
+  if (goingRight && currentBlastX >= blastXes[shoots]) {
+    blasts.push({ x: Math.floor(currentBlastX), y: blastY });
+    shoots++;
+  }
+  if (!goingRight && currentBlastX <= blastXes[blastNumber - 1 - shoots]) {
+    blasts.push({ x: Math.floor(currentBlastX), y: blastY });
+    shoots++;
+  }
+};
+
 const bossShoot = (p: p5) => {
   blasts.forEach((blast) => {
     let blastX = blast.x;
@@ -139,6 +150,13 @@ const bossShoot = (p: p5) => {
       blasts.splice(blasts.indexOf(blast), 1);
     }
   });
+};
+
+const handleShoots = () => {
+  if (shoots >= blastNumber) {
+    shoots = 0;
+    goingRight = !goingRight;
+  }
 };
 
 // Calculate the positions of the blasts
@@ -174,6 +192,8 @@ const bossDied = () => {
   blastDamage = selectedBoss.damage;
   blastXes = [];
   blasts = [];
+  shoots = 0;
+  goingRight = true;
 };
 
 export { boss, damageBoss, bossDied, removeBlast };
